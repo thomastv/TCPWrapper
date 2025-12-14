@@ -17,7 +17,7 @@ public static class MessageProtocol
     /// <returns>Byte array ready for transmission.</returns>
     public static byte[] EncodeMessage(Packet packet)
     {
-        var json = JsonSerializer.SerializePacket(packet);
+        var json = JsonSerializerHelper.SerializePacket(packet);
         var bytes = Encoding.GetBytes(json + MessageDelimiter);
         return bytes;
     }
@@ -33,7 +33,7 @@ public static class MessageProtocol
             return null;
 
         var json = Encoding.GetString(data).Trim();
-        return JsonSerializer.DeserializePacket(json);
+        return JsonSerializerHelper.DeserializePacket(json);
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public static class MessageProtocol
     /// <returns>A Packet containing the serialized message.</returns>
     public static Packet CreatePacket<T>(string messageType, T payload) where T : class
     {
-        var payloadJson = JsonSerializer.Serialize(payload);
+        var payloadJson = JsonSerializerHelper.Serialize(payload);
         return new Packet(messageType, payloadJson);
     }
 
@@ -58,6 +58,6 @@ public static class MessageProtocol
         if (packet == null || string.IsNullOrWhiteSpace(packet.Payload))
             return null;
 
-        return JsonSerializer.Deserialize<T>(packet.Payload);
+        return JsonSerializerHelper.Deserialize<T>(packet.Payload);
     }
 }

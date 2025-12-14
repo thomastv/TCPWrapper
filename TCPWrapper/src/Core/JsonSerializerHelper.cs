@@ -5,7 +5,7 @@ namespace JsonOverTCP.Core;
 /// <summary>
 /// Handles JSON serialization and deserialization with custom options.
 /// </summary>
-public static class JsonSerializer
+public static class JsonSerializerHelper
 {
     private static readonly JsonSerializerOptions DefaultOptions = new()
     {
@@ -24,7 +24,7 @@ public static class JsonSerializer
         if (obj == null)
             return string.Empty;
 
-        return System.Text.Json.JsonSerializer.Serialize(obj, DefaultOptions);
+        return JsonSerializer.Serialize(obj, DefaultOptions);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public static class JsonSerializer
 
         try
         {
-            return System.Text.Json.JsonSerializer.Deserialize<T>(json, DefaultOptions);
+            return JsonSerializer.Deserialize<T>(json, DefaultOptions);
         }
         catch
         {
@@ -52,7 +52,7 @@ public static class JsonSerializer
     /// </summary>
     public static string SerializePacket(Packet packet)
     {
-        return System.Text.Json.JsonSerializer.Serialize(packet, DefaultOptions);
+        return JsonSerializer.Serialize(packet, DefaultOptions);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public static class JsonSerializer
 
         try
         {
-            return System.Text.Json.JsonSerializer.Deserialize<Packet>(json, DefaultOptions);
+            return JsonSerializer.Deserialize<Packet>(json, DefaultOptions);
         }
         catch
         {
