@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Title>JsonOverTCP</Title>
+    <Description>A .NET library for easy JSON serialization and transmission over TCP connections</Description>
+    <Version>1.0.0</Version>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="TCPTestApp/**/*.cs" />
+    <Compile Remove="examples/**/*.cs" />
+  </ItemGroup>
+
+</Project>
