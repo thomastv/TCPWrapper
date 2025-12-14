@@ -1,0 +1,7 @@
+# C# Build objects
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio User Prefs
+.vs/
+
