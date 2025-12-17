@@ -1,0 +1,6 @@
+<Solution>
+  <Name>JsonOverTCP</Name>
+  <Project Path="TCPWrapper\JsonOverTCP.csproj" />
+  <Project Path="JsonOverTCP.Tests\JsonOverTCP.Tests.csproj"/> 
+  <Project Path="TCPTestApp\TCPTestApp.csproj" />
+</Solution>
