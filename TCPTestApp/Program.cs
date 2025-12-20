@@ -1,6 +1,7 @@
 ﻿using JsonOverTCP.Client;
 using JsonOverTCP.Core;
 using JsonOverTCP.Server;
+using System.Text;
 
 
 Console.WriteLine("Run as [s]erver or [c]lient?");
@@ -12,6 +13,8 @@ if (choice == "s")
 }
 else if (choice == "c")
 {
+    Console.OutputEncoding = Encoding.UTF8;
+    Console.InputEncoding = Encoding.UTF8;
     await RunClient();
 }
 

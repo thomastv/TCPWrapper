@@ -18,7 +18,7 @@ public static class MessageProtocol
     public static byte[] EncodeMessage(Packet packet)
     {
         var json = JsonSerializerHelper.SerializePacket(packet);
-        var bytes = Encoding.GetBytes(json + MessageDelimiter);
+        var bytes = Encoding.UTF8.GetBytes(json + MessageDelimiter);
         return bytes;
     }
 
@@ -32,7 +32,7 @@ public static class MessageProtocol
         if (data == null || data.Length == 0)
             return null;
 
-        var json = Encoding.GetString(data).Trim();
+        var json = Encoding.UTF8.GetString(data).Trim();
         return JsonSerializerHelper.DeserializePacket(json);
     }
 
