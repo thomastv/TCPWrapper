@@ -133,13 +133,13 @@ public class TcpClientWrapper(int bufferSize = 8192) : IDisposable
     private async Task ListenForMessagesAsync(CancellationToken cancellationToken)
     {
         var buffer = new byte[_bufferSize];
-        var messageBuffer = new List<byte>();
+        var messageParser = new MessageStreamParser(_bufferSize * 2);
 
         try
         {
             while (IsConnected && !cancellationToken.IsCancellationRequested)
             {
-                int bytesRead = await _networkStream!.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
+                int bytesRead = await _networkStream!.ReadAsync(buffer, cancellationToken);
 
                 if (bytesRead == 0)
                 {
@@ -147,27 +147,15 @@ public class TcpClientWrapper(int bufferSize = 8192) : IDisposable
                     break;
                 }
 
-                messageBuffer.AddRange(buffer.Take(bytesRead));
-
-                // Process complete messages (delimited by newline)
-                while (messageBuffer.Count > 0)
+                // Process the new data and extract complete messages
+                messageParser.ProcessData(buffer.AsSpan(0, bytesRead), messageSpan =>
                 {
-                    int delimiterIndex = messageBuffer.IndexOf((byte)'\n');
-                    if (delimiterIndex < 0)
-                        break;
-
-                    var messageBytes = messageBuffer.Take(delimiterIndex).ToArray();
-                    messageBuffer.RemoveRange(0, delimiterIndex + 1);
-
-                    if (messageBytes.Length > 0)
+                    var packet = MessageProtocol.DecodeMessage(messageSpan.ToArray());
+                    if (packet != null)
                     {
-                        var packet = MessageProtocol.DecodeMessage(messageBytes);
-                        if (packet != null)
-                        {
-                            MessageReceived?.Invoke(this, new PacketReceivedEventArgs(packet));
-                        }
+                        MessageReceived?.Invoke(this, new PacketReceivedEventArgs(packet));
                     }
-                }
+                });
             }
         }
         catch (Exception ex)

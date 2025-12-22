@@ -28,7 +28,7 @@ internal class ClientHandler(
     public async Task HandleClientAsync(CancellationToken cancellationToken)
     {
         var buffer = new byte[_bufferSize];
-        var messageBuffer = new List<byte>();
+        var messageParser = new MessageStreamParser(_bufferSize * 2);
 
         try
         {
@@ -41,27 +41,15 @@ internal class ClientHandler(
                     break;
                 }
 
-                messageBuffer.AddRange(buffer.Take(bytesRead));
-
-                // Process complete messages (delimited by newline)
-                while (messageBuffer.Count > 0)
+                // Process the new data and extract complete messages
+                messageParser.ProcessData(buffer.AsSpan(0, bytesRead), messageSpan =>
                 {
-                    int delimiterIndex = messageBuffer.IndexOf((byte)'\n');
-                    if (delimiterIndex < 0)
-                        break;
-
-                    var messageBytes = messageBuffer.Take(delimiterIndex).ToArray();
-                    messageBuffer.RemoveRange(0, delimiterIndex + 1);
-
-                    if (messageBytes.Length > 0)
+                    var packet = MessageProtocol.DecodeMessage(messageSpan.ToArray());
+                    if (packet != null)
                     {
-                        var packet = MessageProtocol.DecodeMessage(messageBytes);
-                        if (packet != null)
-                        {
-                            _onMessageReceived(_clientId, packet);
-                        }
+                        _onMessageReceived(_clientId, packet);
                     }
-                }
+                });
             }
         }
         catch (Exception ex)

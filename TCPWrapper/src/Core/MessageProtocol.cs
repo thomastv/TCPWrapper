@@ -8,6 +8,12 @@ namespace JsonOverTCP.Core;
 public static class MessageProtocol
 {
     private const string MessageDelimiter = "\n";
+    
+    /// <summary>
+    /// The message delimiter byte used to separate messages in the TCP stream.
+    /// </summary>
+    public const byte MessageDelimiterByte = (byte)'\n';
+    
     private static readonly Encoding Encoding = Encoding.UTF8;
 
     /// <summary>
