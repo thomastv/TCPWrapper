@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -10,11 +10,26 @@
     <Description>A .NET library for easy JSON serialization and transmission over TCP connections</Description>
     <Version>1.0.0</Version>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Authors>Thomas T Vempeny</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/thomastv/TCPWrapper</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="TCPTestApp/**/*.cs" />
     <Compile Remove="examples/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
